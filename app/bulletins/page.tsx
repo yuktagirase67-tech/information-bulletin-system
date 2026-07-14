@@ -2,13 +2,21 @@
 
 import { useEffect, useState } from "react";
 
+interface Bulletin {
+  _id: string;
+  title: string;
+  category: string;
+  description: string;
+  date: string;
+}
+
 export default function BulletinsPage() {
-  const [bulletins, setBulletins] = useState([]);
+  const [bulletins, setBulletins] = useState<Bulletin[]>([]);
 
   useEffect(() => {
     fetch("/api/bulletins")
       .then((res) => res.json())
-      .then((data) => setBulletins(data));
+      .then((data: Bulletin[]) => setBulletins(data));
   }, []);
 
   return (
@@ -20,7 +28,7 @@ export default function BulletinsPage() {
       {bulletins.length === 0 ? (
         <p>No Bulletins Found</p>
       ) : (
-        bulletins.map((item: any) => (
+        bulletins.map((item) => (
           <div
             key={item._id}
             className="bg-white shadow rounded-lg p-5 mb-4"
