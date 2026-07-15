@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = "mongodb://127.0.0.1:27017/bulletinDB";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("Please define the MongoDB URI");
+  throw new Error("Please define the MONGODB_URI environment variable");
 }
 
 declare global {
@@ -30,9 +30,7 @@ async function connectDB() {
   }
 
   if (!cached!.promise) {
-    cached!.promise = mongoose
-      .connect(MONGODB_URI)
-      .then((mongoose) => mongoose);
+    cached!.promise = mongoose.connect(MONGODB_URI as string);
   }
 
   cached!.conn = await cached!.promise;
